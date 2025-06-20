@@ -1,6 +1,6 @@
 # 📨 Postman Workspace Exporter
 
-This Node.js utility exports **all your Postman workspaces**, collects their associated **collections**, and saves each workspace’s collections inside a separate `.zip` file named after the workspace.
+This Node.js utility exports **all your Postman workspaces**, collects their associated **collections**, and saves each workspace’s collections inside a separate `.zip` file named after the workspace. It also exports all **environments** into a separate archive.
 
 ---
 
@@ -8,7 +8,9 @@ This Node.js utility exports **all your Postman workspaces**, collects their ass
 
 - 🔐 Loads Postman API key from `.env`
 - 📦 Exports **all collections** from **every workspace**
-- 🗂 Creates a `.zip` file per workspace with its collections inside
+- 🌍 Exports **all environments** used in your Postman team
+- 🗂 Creates a `.zip` file per workspace (plus one for environments)
+- 📁 All output saved inside an `/exports` folder
 - 💾 Clean and safe filenames (Windows/macOS/Linux-friendly)
 - ✅ Simple setup with `npm start`
 
@@ -21,9 +23,13 @@ This Node.js utility exports **all your Postman workspaces**, collects their ass
 .
 ├── index.js               # Main script
 ├── package.json
-├── .env                  # Holds your API Key
+├── .env                   # Holds your API Key
 ├── node\_modules/
-└── \*.zip                 # Output files (one per workspace)
+└── exports/               # Output ZIP files
+├── Team Workspace.zip
+├── QA Testing.zip
+├── Internal Tools.zip
+└── Environments.zip
 
 ````
 
@@ -35,7 +41,7 @@ This Node.js utility exports **all your Postman workspaces**, collects their ass
 
 ```bash
 git clone https://github.com/your-username/postman-workspace-exporter.git
-cd export-workspace-postman
+cd postman-workspace-exporter
 ````
 
 ### 2. Install dependencies
@@ -65,36 +71,32 @@ npm start
 
 ## 📂 Output
 
-After running, you'll get files like:
+After running, you'll get `.zip` files like:
 
 ```
-Team Workspace.zip
-QA Testing.zip
-Internal Tools.zip
+exports/
+├── Team Workspace.zip
+├── QA Testing.zip
+├── Internal Tools.zip
+└── Environments.zip
 ```
 
-Each `.zip` file contains JSON exports of the collections inside that workspace:
-
-```
-Team Workspace.zip
-├── Users API.json
-├── Orders API.json
-└── ...
-```
+Each workspace `.zip` contains the collections in JSON format.
+`Environments.zip` contains all available environments.
 
 ---
 
 ## 🧩 Notes
 
-* Workspaces without collections are skipped automatically.
-* Filenames are sanitized to avoid issues with invalid characters.
-* Uses [`archiver`](https://www.npmjs.com/package/archiver) for ZIP compression and [`axios`](https://www.npmjs.com/package/axios) for API requests.
+* Workspaces without collections are skipped automatically (no ZIP created).
+* Filenames are sanitized to avoid OS issues.
+* Uses [`archiver`](https://www.npmjs.com/package/archiver) for ZIP compression and [`axios`](https://www.npmjs.com/package/axios) for HTTP requests.
 
 ---
 
 ## 🛠 Scripts
 
-Inside `package.json`:
+Defined in `package.json`:
 
 ```json
 "scripts": {
@@ -112,4 +114,4 @@ MIT — use, share, or modify freely.
 
 ## 👤 Author
 
-Made with ❤️ by Sajjad Mehri
+Made with ❤️ by **Sajjad Mehri**
